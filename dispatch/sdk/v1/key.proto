@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package dispatch.sdk.v1;
+
+// SigningKeyService is used to manage signing keys of programmable endpoints.
+// For security reasons, users only get access to the public keys.
+service SigningKeyService {
+  // CreateSigningKey creates a new signing key pair.
+  // Currently, signing keys are generated with ED25519.
+  rpc CreateSigningKey(CreateSigningKeyRequest) returns (CreateSigningKeyResponse);
+
+  // ListSigningKeys lists all signing keys.
+  rpc ListSigningKeys(ListSigningKeysRequest) returns (ListSigningKeysResponse);
+
+  // DeleteSigningKey deletes a signing key.
+  rpc DeleteSigningKey(DeleteSigningKeyRequest) returns (DeleteSigningKeyResponse);
+}
+
+message CreateSigningKeyRequest {}
+
+message CreateSigningKeyResponse {
+  SigningKey key = 1;
+}
+
+message DeleteSigningKeyRequest {
+  string signing_key_id = 1;
+}
+
+message DeleteSigningKeyResponse {}
+
+message ListSigningKeysRequest {}
+
+message ListSigningKeysResponse {
+  repeated SigningKey keys = 1;
+}
+
+message SigningKey {
+  string signing_key_id = 1;
+  AsymmetricKey asymmetric_key = 2;
+}
+
+message AsymmetricKey {
+  bytes public_key = 1;
+}
